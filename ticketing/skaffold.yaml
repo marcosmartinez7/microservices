@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: auth
+
+build:
+  local:
+    push: false
+  artifacts:
+    - image: marcosmartinez7/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
