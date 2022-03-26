@@ -7,16 +7,13 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log("Cai aca");
   if (error instanceof CustomError) {
-    console.log("Cai aca custom");
 
     return res.status(error.statusCode).send({
       errors: error.serializeErrors(),
     });
   }
 
-  console.log("Cai segui");
 
   return res.status(500).send({
     errors: [
