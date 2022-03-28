@@ -15,7 +15,15 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'auth/src/**/*.ts'
+          - src: "auth/src/**/*.ts"
+            dest: .
+    - image: us.gcr.io/ticketing-dev-340521/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
             dest: .
 deploy:
   kubectl:
