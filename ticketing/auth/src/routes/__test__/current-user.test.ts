@@ -9,7 +9,6 @@ it("responds with details of current user", async () => {
     .send()
     .expect(200);
 
-  console.log(res.body);
   expect(res.body.currentUser.email).toEqual("test@test.com");
 });
 
