@@ -10,9 +10,8 @@ const start = async () => {
     throw new Error("No MONGO_URI");
   }
   await mongoose.connect(process.env.MONGO_URI);
-
   app.listen(3000, () => {
-    console.log("Auth service started at port 3000!");
+    console.log("Tickets service started at port 3000!");
   });
 };
 

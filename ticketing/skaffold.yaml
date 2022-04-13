@@ -25,6 +25,14 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: us.gcr.io/ticketing-dev-340521/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "tickets/src/**/*.ts"
+            dest: .
 deploy:
   kubectl:
     manifests:
