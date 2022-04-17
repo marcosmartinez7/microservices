@@ -9,10 +9,15 @@ const stan = nats.connect("ticketing", randomBytes(4).toString("hex"), {
 stan.on("connect", () => {
   console.log("Listener connected to NATS");
 
-  const options = stan.subscriptionOptions().setManualAckMode(true);
+  const options = stan
+    .subscriptionOptions()
+    .setManualAckMode(true) // retry until ack
+    .setDeliverAllAvailable() // reply from first message
+    .setDurableName("service-name"); // store events with a mark if was processed or not, resume with the not proccessed (Ack). The idea is that with setDeliverAllAvailable we receive all the messages, but, we dont want to reprocess the already ACK ones.
+
   const subscription = stan.subscribe(
     "ticket:created",
-    "listenerQueueGroup",
+    "queue-group-name",
     options
   );
   subscription.on("message", (msg) => {
