@@ -1,4 +1,3 @@
-import { NotFoundError } from "@sapienslabs/ticketing-common";
 import express, { Request, Response } from "express";
 import { Ticket } from "../models/ticket";
 
