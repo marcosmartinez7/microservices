@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { OrderStatus } from "@sapienslabs/ticketing-common";
-
+import { TicketDoc } from "./ticket";
 interface OrderAttrs {
   userId: string;
   status: OrderStatus;
