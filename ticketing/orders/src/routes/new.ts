@@ -10,6 +10,8 @@ import { body } from "express-validator";
 import mongoose from "mongoose";
 import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 const router = express.Router();
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -35,7 +37,6 @@ router.post(
     // Check if ticket is reserved
 
     const isReserved = await ticket.isReserved();
-    console.log("isReserved", isReserved);
 
     if (isReserved) {
       throw new BadRequestError("Ticket is already reserved");
@@ -48,12 +49,21 @@ router.post(
     const order = Order.build({
       userId: req.currentUser!.id,
       status: OrderStatus.Created,
-      expiredAt: expiration,
+      expiresAt: expiration,
       ticket,
     });
     await order.save();
     // Publish an event saying that an order was created
-
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      status: order.status,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticket.id,
+        price: ticket.price,
+      },
+    });
     res.status(201).send(order);
   }
 );

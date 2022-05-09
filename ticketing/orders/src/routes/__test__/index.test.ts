@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
-import { Order } from "../../models/order";
+import { natsWrapper } from "../../nats-wrapper";
 
 const buildTicket = async () => {
   const ticket = Ticket.build({
@@ -51,4 +51,16 @@ it("fetches orders for a particular user", async () => {
   expect(response.body[1].id).toEqual(orderThree.id);
   expect(response.body[0].ticket.id).toEqual(ticketTwo.id);
   expect(response.body[1].ticket.id).toEqual(ticketThree.id);
+});
+
+it("emmits an order created event", async () => {
+  const ticket = await buildTicket();
+  // Create one order as userOne
+  const { body: orderOne } = await request(app)
+    .post("/api/orders")
+    .set("Cookie", global.signin())
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
