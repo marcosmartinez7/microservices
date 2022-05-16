@@ -41,6 +41,7 @@ router.put(
       title: foundTicket.title,
       price: foundTicket.price,
       userId: foundTicket.userId,
+      version: foundTicket.version,
     });
     res.status(200).send(foundTicket);
   }
