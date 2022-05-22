@@ -1,4 +1,5 @@
 import { OrderStatus } from "@sapienslabs/ticketing-common";
+import mongoose from "mongoose";
 import request from "supertest";
 import { app } from "../../app";
 import { Order } from "../../models/order";
@@ -10,6 +11,7 @@ it("marks an order as Cancelled", async () => {
   const ticket = Ticket.build({
     title: "concert",
     price: 20,
+    id: new mongoose.Types.ObjectId().toHexString(),
   });
   await ticket.save();
   // make a request to build an order with this ticket
@@ -33,6 +35,7 @@ it("emmits an order canceled event", async () => {
   const ticket = Ticket.build({
     title: "concert",
     price: 20,
+    id: new mongoose.Types.ObjectId().toHexString(),
   });
   await ticket.save();
   const user = global.signin();
