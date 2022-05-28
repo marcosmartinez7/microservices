@@ -3,27 +3,25 @@ import {
   Listener,
   OrderCreatedEvent,
 } from "@sapienslabs/ticketing-common";
+import { Message } from "node-nats-streaming";
 import { queueGroupName } from "./queue-group-name";
+import { expirationQueue } from "../../queues/expiration-queue";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   readonly subject = Subjects.OrderCreated;
   queueGroupName = queueGroupName;
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
-    console.log("Event data!", data);
-
-    const { id, status } = data;
-
-    const order = await Order.findById(id);
-
-    if (!order) {
-      throw new Error("Order not found!");
-    }
-
-    order.set({ status });
-
-    await order.save();
-
+    const delay = new Date(data.expiresAt).getTime() - new Date().getTime();
+    console.log("Waiting this many milliseconds to process the job:", delay);
+    await expirationQueue.add(
+      {
+        orderId: data.id,
+      },
+      {
+        delay,
+      }
+    );
     msg.ack();
   }
 }
