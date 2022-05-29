@@ -49,7 +49,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-     - image: us.gcr.io/ticketing-dev-340521/payments
+    - image: us.gcr.io/ticketing-dev-340521/payments
       context: payments
       docker:
         dockerfile: Dockerfile
