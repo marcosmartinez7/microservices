@@ -29,6 +29,7 @@ router.post(
       existingUser.password,
       password
     );
+
     if (!passwordMatchs) {
       throw new BadRequestError("Invalid credentials");
     }
