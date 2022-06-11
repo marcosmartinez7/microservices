@@ -47,7 +47,7 @@ const start = async () => {
   process.on("SIGTERM", () => natsWrapper.client.close());
 
   app.listen(3000, () => {
-    console.log("Tickets service started at port 3000!");
+    console.log("Orders service started at port 3000!");
   });
 };
 
