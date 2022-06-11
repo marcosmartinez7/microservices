@@ -6,6 +6,7 @@ import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listene
 import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 const start = async () => {
+  console.log("Starting");
   if (!process.env.JWT_KEY) {
     throw new Error("No JWT_KEY");
   }
@@ -47,7 +48,7 @@ const start = async () => {
   process.on("SIGTERM", () => natsWrapper.client.close());
 
   app.listen(3000, () => {
-    console.log("Tickets service started at port 3000!");
+    console.log("Orders service started at port 3000!");
   });
 };
 
