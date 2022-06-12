@@ -3,7 +3,7 @@ export default ({ req }) => {
   if (typeof window === "undefined") {
     // Server side
     return axios.create({
-      baseURL: "ticketing-nft.org/",
+      baseURL: "http://www.ticketing-nft.org/",
       headers: req.headers,
     });
   } else {
