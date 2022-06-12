@@ -3,8 +3,7 @@ export default ({ req }) => {
   if (typeof window === "undefined") {
     // Server side
     return axios.create({
-      baseURL:
-        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+      baseURL: "ticketing-nft.org/",
       headers: req.headers,
     });
   } else {
