@@ -14,6 +14,7 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
 };
 
 AppComponent.getInitialProps = async (appContext) => {
+  console.log("Get initial props ...");
   const api = buildCient(appContext.ctx);
   const res = await api.get("/api/users/currentuser").catch((err) => {
     console.log("There was an error getting current user", err.message);
